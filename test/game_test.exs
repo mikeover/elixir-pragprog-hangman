@@ -11,4 +11,11 @@ defmodule GameTest do
     assert length(game.letters) > 0
     assert Regex.match?(~r/[a-z]*/, Enum.join(game.letters))
   end
+
+  test "state isn't changed for :won or :lost game" do
+    for state <- [:won, :lost] do
+      game = Game.new_game() |> Map.put(:game_state, state)
+      assert {^game, _tally} = Game.make_move(game, "x")
+    end
+  end
 end
