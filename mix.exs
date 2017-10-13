@@ -21,7 +21,7 @@ defmodule Hangman.Mixfile do
 
   defp deps do
     [
-      { :dictionary, path: "../dictionary" },
+      { :dictionary, git: "git://github.com/mikeover/elixir-pragprog-dictionary.git" },
     ]
   end
 end
