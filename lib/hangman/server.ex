@@ -2,12 +2,12 @@ defmodule Hangman.Server do
   use GenServer
   alias Hangman.Game
 
-  def start_link do
-    GenServer.start_link(__MODULE__, nil)
+  def start_link([difficulty]) do
+    GenServer.start_link(__MODULE__, difficulty)
   end
 
-  def init(_) do
-    { :ok, Game.new_game }
+  def init(difficulty) do
+    { :ok, Game.new_game(difficulty) }
   end
 
   def handle_call({ :make_move, guess }, _from, game) do

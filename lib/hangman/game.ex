@@ -1,20 +1,32 @@
 defmodule Hangman.Game do
 
   defstruct(
-    turns_left: 7,
+    turns_left: 10,
     game_state: :initializing,
     letters: [],
     used: MapSet.new(),
+    turns_allowed: 10,
+    difficulty: :easy,
   )
 
+  def new_game("hard") do
+    %{ new_game(Dictionary.random_word) |
+       difficulty: :hard,
+       turns_left: 7,
+       turns_allowed: 7,
+    }
+  end
+  def new_game("easy") do
+    %{ new_game(Dictionary.random_word) |
+       difficulty: :easy,
+       turns_left: 10,
+       turns_allowed: 10,
+    }
+  end
   def new_game(word) do
     %Hangman.Game{
       letters: word |> String.codepoints
     }
-  end
-
-  def new_game() do
-    new_game(Dictionary.random_word)
   end
 
   def make_move(game = %{game_state: state}, _guess) when state in [:won, :lost] do
@@ -33,6 +45,8 @@ defmodule Hangman.Game do
       turns_left: game.turns_left,
       letters: game.letters |> reveal_guessed(game.used, game.game_state),
       letters_used: game.used,
+      turns_allowed: game.turns_allowed,
+      difficulty: game.difficulty,
     }
   end
 
